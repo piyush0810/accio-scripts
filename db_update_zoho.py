@@ -66,7 +66,6 @@ while True:
         "IsAgreementSigned":str(data[17]),
         "Number_of_Lectures_attended_in_precourse":data[18],
         "Last_Lecture_Attended":str(data[19])[:-5] if data[19]!=None else None
-        # "Created_Date_Time":str(data[16])
         }
     ],
     "trigger": [

@@ -14,10 +14,10 @@ src_conn = psycopg2.connect(
 
 
 target_conn = psycopg2.connect(
- 	host = "accio-school-18-apr-2022-do-user-9368613-0.b.db.ondigitalocean.com",
+ 	host = "accio-prod-do-user-9368613-0.b.db.ondigitalocean.com",
 	user = "doadmin",
-	password = "AVNS_pOygW8yny903ulM",
-    database = "accioschool-staging",
+	password = "p2jvqo3303xxw9b3",
+    database = "accio-app-prod",
     port = "25060"
 )
 #Creating a cursor object using the cursor() method
