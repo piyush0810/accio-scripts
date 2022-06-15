@@ -1,0 +1,209 @@
+select * from zoho_temp4 where interview_status = 'Booked'
+select * from user_report_card where "interviewDate" is not null and "interviewCleared" = false
+select "interviewCleared" from user_report_card
+select count(*) from zoho_temp2
+select count(*) from sales_leads
+select * from coding_question limit 1
+select * from sales_leads
+Select * from users limit 10
+
+drop table zoho_temp8
+
+select * from users where jsonb_array_length("joinedLiveClassDates")>0
+
+SELECT 
+  "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) AS PostCode
+FROM user_course_enrollment
+Select 
+case
+when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+as Last_Questioned_Solved from user_course_enrollment
+
+select * from zoho_temp10 limit 10000
+
+select * from users limit 10
+WHERE ISJSON(jsonCol) > 0
+  AND JSON_VALUE(jsonCol, '$.info.address.Town') = 'Belgrade'
+  AND Status = 'Active'
+ORDER BY JSON_VALUE(jsonCol, '$.info.address.PostCode')
+
+SELECT DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+     TABLE_SCHEMA = 'public' AND
+     TABLE_NAME   = 'user_course_enrollment' AND 
+     COLUMN_NAME  = 'codingSubmissions'
+     
+select JSONB_ARRAY_LENGTH("codingSubmissions") as length from user_course_enrollment
+select * from user_course_enrollment limit 10
+select
+    "codingSubmissions"
+from user_course_enrollment;
+drop table zoho_temp1
+Create TABLE zoho_temp1
+  AS (
+  Select 
+  CONCAT(users."firstName", ',', users."lastName") AS Last_Name,
+  "phoneNumber" as Mobile,
+  'old leads from website' as Description,
+  'Website' as Lead_Source,
+  user_report_card."codingTestSubmissionDate" as Coding_Test1_Date,
+  case 
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS false then 'Booked'
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS true then 'Cleared'
+  when user_report_card."interviewDate" IS NULL AND user_report_card."interviewCleared" IS false then 'Not Booked' end  AS Interview_Status,
+  user_report_card."codingTestCleared" as Coding_Test_Status,
+  user_report_card."codingTestSubmissionDate2" as Coding_Test2_Date,
+  user_report_card."interviewDate" as Interview_Date ,
+  users.email as Email,
+  users."callbackRequestTime" as CBR_Date_Time,
+  users."callbackRequest" as Call_Back_Requested,
+  users."graduationYear" as GraduationYear,
+  user_report_card."userCourseStatus" as isAgreementSigned,
+  JSONB_ARRAY_LENGTH("codingSubmissions") as questionsSolved,
+  case
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+    as Last_Questioned_Solved,
+    users.id as userid
+  from 
+  users 
+    inner join 
+        user_course_enrollment
+            on user_course_enrollment."userId"::uuid=users.id
+    inner join 
+        user_report_card 
+            on user_report_card."userId"::uuid=users.id 
+            where user_report_card."userId" not IN (select "userId"::uuid from sales_leads));
+            
+            
+            
+
+drop table tempquestionScores
+CREATE TABLE tempquestionScores2 as(
+select max(score) as Score,"userId","questionIdId" from question_answers_submission group by "userId","questionIdId" )
+select * from tempquestionScores2;
+
+create table submissionScore as (
+select max(score) as Score,"userId","questionIdId","webDevQuestionIdId" from question_answers_submission group by "userId","questionIdId","webDevQuestionIdId"
+
+)
+create table coding_user_score_card as (
+select T1.* 
+    from submissionScore as T1
+    LEFT OUTER JOIN 
+    (select id,"userId","codingQuestionId" from user_score_card) as T2
+    ON T1."userId" = T2."userId" AND T1."questionIdId" = T2."codingQuestionId" 
+    where
+    T2.id IS NULL
+)
+
+create table webdev_user_score_card as (
+select T1.* 
+    from submissionScore as T1
+    LEFT OUTER JOIN 
+    (select id,"userId","webDevQuestionIdId" from user_score_card) as T2
+    ON T1."userId" = T2."userId" AND T1."webDevQuestionIdId" = T2."webDevQuestionIdId" 
+    where
+    T2.id IS NULL
+)
+
+select * from coding_question limit 10
+
+
+select * from user_score_card limit 10
+SELECT 
+    T3.*
+FROM
+    (select T1.* 
+    from submissionScore as T1
+    LEFT OUTER JOIN 
+    (select id,"userId","codingQuestionId" from user_score_card) as T2
+    ON T1."userId" = T2."userId" AND T1."questionIdId" = T2."codingQuestionId" 
+    where
+    T2.id IS NULL) as T3 
+    left outer join 
+    (select id,"userId","webDevQuestionIdId" from user_score_card) as t4
+    ON T3."userId" = T4."userId" AND T3."webDevQuestionIdId" = T4."webDevQuestionIdId" 
+    where T4.id is NULL
+    
+
+    
+select count(*) from question_answers_submission
+    
+create table tempquestionscores3 as (
+select * from 
+(select max(score) as Score,"userId","questionIdId" from question_answers_submission group by "userId","questionIdId" )
+as a where a."userId",a."questionIdId"
+not in 
+
+)    
+select * from question_answers_submission limit 10 
+
+select count(*) from coding_user_score_card
+
+select count(*) from question_answers_submission
+select * from user_score_card limit 10
+select count(*) from Backup_coding_userScoreCard
+drop table Backup_coding_userScoreCard
+
+-- script1
+-- creates a backup table to insert entries in user_score_card for max scores of coding questions
+create table Backup_coding_userScoreCard as (
+select max(score) as score,min("created") as "createdAt","userId","questionIdId" as "codingQuestionId" from question_answers_submission group by ("userId","questionIdId")
+)
+
+-- script 2
+insert into user_score_card(score,"createdAt","userId","codingQuestionId")
+select * from Backup_coding_userScoreCard
+
+-- script 3
+-- creates a backup table to insert entries in user_score_card for max scores of web dev questions   
+create table Backup_webdev_userScoreCard as (
+select max(score) as score,min("created") as "createdAt","userId","webDevQuestionIdId" as "webDevQuestionIdId" from question_answers_submission group by ("userId","webDevQuestionIdId")
+)
+
+--script 4
+insert into user_score_card(score,"createdAt","userId","webDevQuestionIdId")
+select * from Backup_webdev_userScoreCard
+
+--script 5
+-- to delet all the entries in question_answers_submission to make languageid,userid,codingquestionid unique
+-- not tested
+DELETE FROM question_answers_submission t1
+WHERE EXISTS(SELECT 1 FROM question_answers_submission t2
+             WHERE t1."userId" = t2."userId"
+             AND t2."webDevQuestionIdId" is NULL
+             AND t2."questionIdId"=t1."questionIdId"
+             AND t2."languageid"=t1."languageid"
+             AND t1."created" < t2."created")
+             
+             
+--script 6
+-- to delete all the entries in question_answers_submission to make languageid,userid,codingquestionid unique
+-- not tested
+DELETE FROM question_answers_submission t1
+WHERE EXISTS(SELECT 1 FROM question_answers_submission t2
+             WHERE t1."userId" = t2."userId"
+             AND t2."questionIdId" is NULL
+             AND t2."webDevQuestionIdId"=t1."webDevQuestionIdId"
+             AND t2."languageid"=t1."languageid"
+             AND t1."created" < t2."created")
+             
+             
+-- script to get count fo webdev questions solved by user
+Select count(distinct github_assignment_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_github_question_m2m on module_github_question_m2m."moduleId"::uuid = module.id
+    inner join github_assignment_question on github_assignment_question.id=module_github_question_m2m."githubAssignmentQuestionId"::uuid
+    inner join user_score_card on user_score_card."userId" = user_course_enrollment."userId"::uuid 
+    and user_score_card."webDevQuestionIdId"::uuid=github_assignment_question.id
+    where user_course_enrollment."userId"='a5ac89a5-c0f7-4173-8345-a6322845896d'
+    and user_score_card.score=github_assignment_question.score
+             
+
+
+

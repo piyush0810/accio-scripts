@@ -1,0 +1,207 @@
+select * from zoho_temp4 where interview_status = 'Booked'
+select * from user_report_card where "interviewDate" is not null and "interviewCleared" = false
+select "interviewCleared" from user_report_card
+select count(*) from zoho_temp2
+select count(*) from sales_leads
+select * from variables limit 1
+select * from sales_leads
+select * from course limit 10
+Select * from users limit 10
+select count(*) from zoho_temp1
+select * from question_answers_submission limit 50
+drop table zoho_temp8
+select * from users limit 10
+select * from users where email like '%instructor%'
+select * from user_course_enrollment where "userId" = '07c0d5fd-dd64-4e3f-ac6d-de049e41f42a'
+Select count( distinct coding_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_coding_question_m2m on module_coding_question_m2m."moduleId"::uuid = module.id
+    inner join coding_question on coding_question.id=module_coding_question_m2m."codingQuestionId"::uuid
+    where user_course_enrollment."userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a' 
+    and course."courseType" = 'COURSE'
+    and (module.type='ASSIGNMENT' or module.type='WEB_ASSIGNMENT')
+    
+select * from question_answers_submission where question_answers_submission."userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a' and solved=true
+    
+select * from user_course_enrollment where "userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a' 
+select * from module limit 10
+Select count(distinct coding_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_coding_question_m2m on module_coding_question_m2m."moduleId"::uuid = module.id
+    inner join coding_question on coding_question.id=module_coding_question_m2m."codingQuestionId"::uuid
+    inner join user_score_card on user_score_card."userId" = user_course_enrollment."userId"::uuid 
+    and user_score_card."codingQuestionId"::uuid=coding_question.id
+    and user_score_card."courseId"::uuid=course.id
+    where 
+    user_course_enrollment."userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a' 
+    and
+    user_score_card.score=coding_question.score
+    
+select count(*) from coding_question;
+select count(distinct coding_question.id) 
+from coding_question 
+inner join  user_score_card on user_score_card."codingQuestionId"::uuid=coding_question.id 
+where user_score_card."userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a'
+
+select count(*) from user_score_card where "userId"='a5ac89a5-c0f7-4173-8345-a6322845896d' and "courseId"='e4dae55d-19d1-40d5-9955-774a8feb6f12'
+
+select count(*) from question_answers_submission where "userId" 
+
+
+Select count( distinct github_assignment_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_github_question_m2m on module_github_question_m2m."moduleId"::uuid = module.id
+    inner join github_assignment_question on github_assignment_question.id=module_github_question_m2m."githubAssignmentQuestionId"::uuid
+    where user_course_enrollment."userId"='a5ac89a5-c0f7-4173-8345-a6322845896d' 
+    and course."courseType" = 'COURSE'
+    
+
+
+
+
+
+select distinct question_answers_submission."questionIdId",language_id from user_score_card 
+inner join question_answers_submission on user_score_card."userId"=question_answers_submission."userId"
+and user_score_card."codingQuestionId"=question_answers_submission."questionIdId"
+where question_answers_submission."userId"='07c0d5fd-dd64-4e3f-ac6d-de049e41f42a' and question_answers_submission.solved=true and "courseId" ='b8712abc-1d85-4bd7-9bc5-a3e199d1510b'
+
+select "webDevQuestionIdId" from question_answers_submission where "userId"='b2c37c8d-fe71-4130-84c5-a2ce9af8bea6'
+
+select distinct user_score_card."courseId",question_answers_submission."questionIdId",question_answers_submission."webDevQuestionIdId" from question_answers_submission 
+inner join user_score_card 
+on user_score_card."userId" = question_answers_submission."userId" 
+and user_score_card."codingQuestionId"=question_answers_submission."questionIdId" where user_score_card."userId" = 'b2c37c8d-fe71-4130-84c5-a2ce9af8bea6' and solved=true
+
+select * from users where jsonb_array_length("joinedLiveClassDates")>0
+
+SELECT 
+  "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) AS PostCode
+FROM user_course_enrollment
+Select 
+case
+when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+as Last_Questioned_Solved from user_course_enrollment
+
+select * from zoho_temp10 limit 10000
+
+select * from users limit 10
+WHERE ISJSON(jsonCol) > 0
+  AND JSON_VALUE(jsonCol, '$.info.address.Town') = 'Belgrade'
+  AND Status = 'Active'
+ORDER BY JSON_VALUE(jsonCol, '$.info.address.PostCode')
+
+SELECT DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+     TABLE_SCHEMA = 'public' AND
+     TABLE_NAME   = 'user_course_enrollment' AND 
+     COLUMN_NAME  = 'codingSubmissions'
+     
+select JSONB_ARRAY_LENGTH("codingSubmissions") as length from user_course_enrollment
+select * from user_course_enrollment limit 10
+select
+    "codingSubmissions"
+from user_course_enrollment;
+select * from zoho_temp2
+select count * from temo
+drop table zoho_temp2
+Create TABLE zoho_temp2
+  AS (
+  Select 
+  CONCAT(users."firstName", ',', users."lastName") AS Last_Name,
+  "phoneNumber" as Mobile,
+  'old leads from website' as Description,
+  'Website' as Lead_Source,
+  user_report_card."codingTestSubmissionDate" as Coding_Test1_Date,
+  case 
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS false then 'Booked'
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS true then 'Cleared'
+  when user_report_card."interviewDate" IS NULL AND user_report_card."interviewCleared" IS false then 'Not Booked' end  AS Interview_Status,
+  user_report_card."codingTestCleared" as Coding_Test_Status,
+  user_report_card."codingTestSubmissionDate2" as Coding_Test2_Date,
+  user_report_card."interviewDate" as Interview_Date ,
+  users.email as Email,
+  users."callbackRequestTime" as CBR_Date_Time,
+  users."callbackRequest" as Call_Back_Requested,
+  users."graduationYear" as GraduationYear,
+  user_report_card."userCourseStatus" as isAgreementSigned,
+  JSONB_ARRAY_LENGTH("codingSubmissions") as questionsSolved,
+  case
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+    as Last_Questioned_Solved,
+    users.id as userid
+  from 
+  users 
+    inner join 
+        user_course_enrollment
+            on user_course_enrollment."userId"::uuid=users.id
+    inner join 
+        user_report_card 
+            on user_report_card."userId"::uuid=users.id 
+            where user_report_card."userId" not IN (select "userId"::uuid from sales_leads));
+            
+            
+            
+            
+    Select count(distinct coding_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_coding_question_m2m on module_coding_question_m2m."moduleId"::uuid = module.id
+    inner join coding_question on coding_question.id=module_coding_question_m2m."codingQuestionId"::uuid
+    inner join user_score_card on user_score_card."userId" = user_course_enrollment."userId"::uuid 
+    and user_score_card."codingQuestionId"::uuid=coding_question.id
+    where user_course_enrollment."userId"='a5ac89a5-c0f7-4173-8345-a6322845896d'
+    and user_score_card.score=coding_question.score*(user_score_card.viewedTC)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+Create TABLE zoho_temp2
+  AS (
+  Select 
+  CONCAT(users."firstName", ',', users."lastName") AS Last_Name,
+  "phoneNumber" as Mobile,
+  'old leads from website' as Description,
+  'Website' as Lead_Source,
+  user_report_card."codingTestSubmissionDate" as Coding_Test1_Date,
+  case 
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS false then 'Booked'
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS true then 'Cleared'
+  when user_report_card."interviewDate" IS NULL AND user_report_card."interviewCleared" IS false then 'Not Booked' end  AS Interview_Status,
+  user_report_card."codingTestCleared" as Coding_Test_Status,
+  user_report_card."codingTestSubmissionDate2" as Coding_Test2_Date,
+  user_report_card."interviewDate" as Interview_Date ,
+  users.email as Email,
+  users."callbackRequestTime" as CBR_Date_Time,
+  users."callbackRequest" as Call_Back_Requested,
+  users."graduationYear" as GraduationYear,
+  user_report_card."userCourseStatus" as isAgreementSigned,
+  JSONB_ARRAY_LENGTH("codingSubmissions") as questionsSolved,
+  case
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+    as Last_Questioned_Solved,
+    users.id as userid
+  from 
+  users 
+    inner join
+        user_course_enrollment
+            on user_course_enrollment."userId"::uuid=users.id
+    inner join 
+        user_report_card 
+            on user_report_card."userId"::uuid=users.id 
+            where user_report_card."userId" not IN (select "userId"::uuid from sales_leads));

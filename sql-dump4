@@ -1,0 +1,48 @@
+drop table zoho_temp1
+select * from zoho_temp1
+select * from zoho_temp1 limit 500
+create table zoho_1temp as (
+select * from zoho_temp1 offset 3000
+)
+selct count(*) from zoho_temp1
+select * from main_course_user_properties
+Create TABLE zoho_temp1
+  AS (
+  Select 
+  CONCAT(users."firstName", ',', users."lastName") AS Last_Name,
+  "phoneNumber" as Mobile,
+  'old leads from website' as Description,
+  'Website' as Lead_Source,
+  user_report_card."codingTestSubmissionDate" as Coding_Test1_Date,
+  case 
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS false then 'Booked'
+  when user_report_card."interviewDate" IS NOT NULL AND user_report_card."interviewCleared" IS true then 'Cleared'
+  when user_report_card."interviewDate" IS NULL AND user_report_card."interviewCleared" IS false then 'Not Booked' end  AS Interview_Status,
+  user_report_card."codingTestCleared" as Coding_Test_Status,
+  user_report_card."codingTestSubmissionDate2" as Coding_Test2_Date,
+  user_report_card."interviewDate" as Interview_Date ,
+  users.email as Email,
+  users."callbackRequestTime" as CBR_Date_Time,
+  users."callbackRequest" as Call_Back_Requested,
+  users."graduationYear" as GraduationYear,
+  user_report_card."userCourseStatus" as progressStatus,
+  JSONB_ARRAY_LENGTH("codingSubmissions") as questionsSolved,
+  case
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NOT NULL then "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1)->'submissionDate'::text
+    when "codingSubmissions"->(jsonb_array_length("codingSubmissions")-1) IS NULL then NULL end
+    as Last_Questioned_Solved,
+    users.id as userid,
+    users."isAgreementSigned" as isAgreementSigned,
+    JSONB_ARRAY_LENGTH("joinedLiveClassDates") as NoOfSessionsAttended,
+    "joinedLiveClassDates"->(jsonb_array_length("joinedLiveClassDates")-1) as LastSessionAttended,
+    users.created_at as "RegistrationDate"
+    
+  from 
+  users 
+    inner join 
+        user_course_enrollment
+            on user_course_enrollment."userId"::uuid=users.id
+    inner join 
+        user_report_card 
+            on user_report_card."userId"::uuid=users.id 
+            where user_report_card."userId" IN (select "userId"::uuid from sales_leads) order by users.created_at desc);

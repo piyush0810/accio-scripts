@@ -1,0 +1,129 @@
+select * from user_score_card where contest is not null
+
+
+
+select count(*) from coding_question
+
+Insert into coding_question (id,statement,title,difficulty,score,question_type,"javaPreDriverCode","testCase","createdAt","updatedAt","parentType",solution) values ('b630c0be-f168-423f-9d7a-f3c4acfc36e6','# TREE LEVEL ORDER TRAVERSAL
+
+You are given the number of nodes present in the tree. You have to input the nodes and form a Binary Search Tree (BST). After forming the BST, print the Level Order traversal of the BST.
+
+### Input
+
+Line 1 contains integer n denoting number of nodes.
+
+Line 2 contains n spaced integers denoting node values.
+
+### Output
+
+Print a single line of space separated integers denoting Level Order traversal of tree.
+
+### Constraints
+
+ 1<=n<=500
+
+ -1000<=value of node<=1000
+
+### Sample Input
+```
+6
+
+1 2 5 3 4 6
+```
+### Sample Output
+
+```
+1 2 5 3 6 4
+```
+### Explanation
+```
+The BST is like :-
+     1
+      \
+       2
+        \
+         5
+        /  \
+       3    6
+        \
+         4
+We need to print the nodes level by level. We process each level from left to right.
+
+Level Order Traversal: 1 -> 2 -> 5 -> 3 -> 6 -> 4.
+```
+
+','Tree Level Order Traversal','MEDIUM',50,'DSA','import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String args[]) {
+        // your code here
+    }
+}','[{"input": "6\n1 2 5 3 4 6 \n", "hidden": true, "output": "1 2 5 3 6 4\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "20\n-171 -27 -757 998 -379 680 -863 -486 7 -708 598 -601 58 -396 -105 -346 846 109 -328 351 \n", "hidden": true, "output": "-171 -757 -27 -863 -379 -105 998 -486 -346 680 -708 -396 -328 7 846 -601 598 58 109 351\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "25\n37 -104 -189 87 -44 -82 103 -93 138 -174 160 -131 185 78 -53 -60 -140 -101 -119 -36 25 15 -192 -72 53 \n", "hidden": true, "output": "37 -104 87 -189 -44 78 103 -192 -174 -82 -36 53 138 -131 -93 -53 25 160 -140 -119 -101 -60 15 185 -72\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "10\n921 911 975 807 987 823 979 830 922 836 \n", "hidden": true, "output": "921 911 975 807 922 987 823 979 830 836\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "20\n13 11 10 19 17 100 12 109 190 14 121 170 191 192 193 101 110 181 182 179 \n", "hidden": true, "output": "13 11 19 10 12 17 100 14 109 101 190 121 191 110 170 192 181 193 179 182\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "20\n374 474 729 -79 -92 458 117 890 808 204 350 -83 754 705 895 316 417 877 550 364 \n", "hidden": true, "output": "374 -79 474 -92 117 458 729 -83 204 417 705 890 350 550 808 895 316 364 754 877\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "30\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 41 42 43 44 45 46 47 48 49 100 \n", "hidden": true, "output": "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 41 42 43 44 45 46 47 48 49 100\n", "maxTimeLimitInMilliSeconds": 100}, {"input": "40\n23 45 67 89 18 -90 -87 -75 -684 3 4 5 6 7 8 9 -9 -8 -7 -654 -3 -2 -1 201 202 200 345 -345 -912 -964 498 901 350 450 750 705 123 567 890 1000 \n", "hidden": true, "output": "23 18 45 -90 67 -684 -87 89 -912 -654 -75 201 -964 -345 3 200 202 -9 4 123 345 -8 5 498 -7 6 350 901 -3 7 450 750 1000 -2 8 705 890 -1 9 567\n", "maxTimeLimitInMilliSeconds": 100}]','2021-08-09 19:20:31.657458','2021-08-09 19:20:31.657458','MODULE','import java.io.*;
+import java.util.*;
+
+class Node{
+    int val;
+    Node left, right;
+    Node(int val){
+        this.val = val;
+        left = null;
+        right = null;
+    }
+}
+class BST{
+    Node root = null;
+    BST(){
+
+    }
+    Node insert(Node root, int val){
+        if(root == null){
+            root = new Node(val);
+            return root;
+        }
+        if(val < root.val){
+            root.left = insert(root.left, val);
+        }else{
+            root.right = insert(root.right, val);
+        }
+        return root;
+    }
+}
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        BST t = new BST();
+        for(int i = 0; i < n; i++){
+            t.root = t.insert(t.root, input.nextInt());
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(t.root);
+        while(q.size() > 0){
+            Node node = q.poll();
+            System.out.print(node.val + " ");
+            if(node.left != null)
+                q.add(node.left);
+            if(node.right != null)
+                q.add(node.right);
+        }
+
+    }
+}') 
+On CONFLICT(id) DO NOTHING;
+
+
+
+
+
+
+Select count(distinct coding_question.id) from user_course_enrollment 
+    inner join course on course.id = user_course_enrollment."courseId"::uuid
+    inner join course_module_mapping on course_module_mapping."courseId"::uuid=course.id
+    inner join module on module.id=course_module_mapping."moduleId"::uuid
+    inner join module_coding_question_m2m on module_coding_question_m2m."moduleId"::uuid = module.id
+    inner join coding_question on coding_question.id=module_coding_question_m2m."codingQuestionId"::uuid
+    inner join user_score_card on user_score_card."userId" = user_course_enrollment."userId"::uuid 
+    and user_score_card."codingQuestionId"::uuid=coding_question.id
+    where user_course_enrollment."userId"='a5ac89a5-c0f7-4173-8345-a6322845896d'
+    and user_score_card.score=coding_question.score*((json_array_length(coding_question."testCase")-json_array_length(user_score_card.viewedTC))/json_array_length(coding_question."testCase"))
